@@ -56,6 +56,38 @@ public class Producto {
         this.disponibilidadProducto = disponibilidadProducto;
     }
 
+    /**
+     * Metodo para verificar si la categoria del producto es valida
+     * @param categoria
+     * @return
+     */
+
+    public static boolean esCategoriaValida(String categoria) {
+        return categoria.equalsIgnoreCase("Alimentos")
+                || categoria.equalsIgnoreCase("Bebidas")
+                || categoria.equalsIgnoreCase("Productos de aseo")
+                || categoria.equalsIgnoreCase("Cuidado personal");
+    }
+
+    /**
+     * Metodo para verificar si hay unidades suficientes del producto
+     * @param cantidad
+     * @return
+     */
+
+    public boolean hayDisponibilidad(int cantidad) {
+        return disponibilidadProducto >= cantidad;
+    }
+
+    /**
+     * Metodo para descontar unidades del inventario
+     * @param cantidad
+     */
+
+    public void descontarInventario(int cantidad) {
+        disponibilidadProducto -= cantidad;
+    }
+
     @Override
     public String toString() {
         return "Producto{" +

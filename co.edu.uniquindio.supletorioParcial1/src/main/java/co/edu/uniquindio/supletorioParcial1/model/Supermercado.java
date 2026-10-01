@@ -23,7 +23,14 @@ public class Supermercado {
         this.listCompras = new ArrayList<>();
     }
 
-   //CRUD Cliente
+    /**
+     * Metodo para poder registrar los clientes
+     * @param documento
+     * @param nombre
+     * @param telefono
+     * @param email
+     * @return
+     */
 
     public boolean registrarCliente(String documento, String nombre, String telefono, String email) {
         if (documento.isEmpty() || nombre.isEmpty()) {
@@ -36,6 +43,12 @@ public class Supermercado {
         return true;
     }
 
+    /**
+     * Metododo para buscar a clientes
+     * @param documento
+     * @return
+     */
+
     public Cliente buscarCliente(String documento) {
         for (Cliente c : listClientes) {
             if (c.getDocumentoIdentidad().equals(documento)) {
@@ -44,6 +57,15 @@ public class Supermercado {
         }
         return null;
     }
+
+    /**
+     * Metodo para poder actualizar los datos del cliente
+     * @param documento
+     * @param nombre
+     * @param telefono
+     * @param email
+     * @return
+     */
 
     public boolean actualizarCliente(String documento, String nombre, String telefono, String email) {
         Cliente c = buscarCliente(documento);
@@ -56,6 +78,12 @@ public class Supermercado {
         return true;
     }
 
+    /**
+     * Metodo para poder eliminar al cliente
+     * @param documento
+     * @return
+     */
+
     public boolean eliminarCliente(String documento) {
         Cliente c = buscarCliente(documento);
         if (c == null || !c.getListCompras().isEmpty()) {
@@ -65,7 +93,7 @@ public class Supermercado {
         return true;
     }
 
-    // CRUD producto
+
 
     /**
      * Metodo para registrar producto
@@ -81,7 +109,7 @@ public class Supermercado {
         if (codigo.isEmpty() || nombre.isEmpty() || precio <= 0 || disponibilidad < 0) {
             return false;
         }
-        if (!esCategoriaValida(categoria) || buscarProducto(codigo) != null) {
+        if (!Producto.esCategoriaValida(categoria) || buscarProducto(codigo) != null) {
             return false;
         }
         listProductos.add(new Producto(codigo, nombre, categoria, precio, disponibilidad));
@@ -116,7 +144,7 @@ public class Supermercado {
 
     public boolean actualizarProducto(String codigo, String nombre, String categoria, double precio, int disponibilidad) {
         Producto p = buscarProducto(codigo);
-        if (p == null || nombre.isEmpty() || precio <= 0 || disponibilidad < 0 || !esCategoriaValida(categoria)) {
+        if (p == null || nombre.isEmpty() || precio <= 0 || disponibilidad < 0 || !Producto.esCategoriaValida(categoria)) {
             return false;
         }
         p.setNombreProducto(nombre);
@@ -151,7 +179,7 @@ public class Supermercado {
      */
 
     public boolean crearCompra(int codigo, LocalDate fecha, String metodoPago, Cliente cliente) {
-        if (codigo <= 0 || fecha == null || cliente == null || !esMetodoPagoValido(metodoPago)) {
+        if (codigo <= 0 || fecha == null || cliente == null || !Compra.esMetodoPagoValido(metodoPago)) {
             return false;
         }
         if (buscarCompra(codigo) != null) {
@@ -193,58 +221,14 @@ public class Supermercado {
             return false;
         }
         // si el producto ya estaba en la compra se suma lo ya seleccionado
-        int total = cantidad + cantidadYaSeleccionada(compra, producto);
-        if (producto.getDisponibilidadProducto() < total) {
+        int total = cantidad + compra.cantidadYaSeleccionada(producto);
+        if (!producto.hayDisponibilidad(total)) {
             return false;
         }
         double precio = producto.getPrecioUnitarioProducto();
-        double subTotal = calcularSubtotal(cantidad, precio);
-        compra.getListDetalleCompras().add(new DetalleCompra(producto, cantidad, precio, subTotal));
-        compra.setValorTotalCompra(calcularTotalCompra(compra));
+        compra.getListDetalleCompras().add(new DetalleCompra(producto, cantidad, precio));
+        compra.setValorTotalCompra(compra.calcularTotal());
         return true;
-    }
-
-    /**
-     * Metodo metodo suma cuantas unidades de un producto ya estan seleccionados en la misma compra
-     * @param compra
-     * @param producto
-     * @return
-     */
-
-    private int cantidadYaSeleccionada(Compra compra, Producto producto) {
-        int cantidad = 0;
-        for (DetalleCompra d : compra.getListDetalleCompras()) {
-            if (d.getTheProducto() == producto) {
-                cantidad += d.getCantidadSeleccionada();
-            }
-        }
-        return cantidad;
-    }
-
-
-    /**
-     * Metodo para calcular el subtotal de la compra
-     * @param cantidad
-     * @param precio
-     * @return
-     */
-
-    public double calcularSubtotal(int cantidad, double precio) {
-        return cantidad * precio;
-    }
-
-    /**
-     * Metodo para calcular el total de la compra
-     * @param compra
-     * @return
-     */
-
-    public double calcularTotalCompra(Compra compra) {
-        double total = 0;
-        for (DetalleCompra d : compra.getListDetalleCompras()) {
-            total += d.getSubTotal();
-        }
-        return total;
     }
 
     /**
@@ -261,13 +245,13 @@ public class Supermercado {
         // revalida la disponibilidad, porque otra compra pudo haber consumido el inventario
         for (DetalleCompra d : compra.getListDetalleCompras()) {
             Producto p = d.getTheProducto();
-            if (p.getDisponibilidadProducto() < cantidadYaSeleccionada(compra, p)) {
+            if (!p.hayDisponibilidad(compra.cantidadYaSeleccionada(p))) {
                 return false;
             }
         }
         for (DetalleCompra d : compra.getListDetalleCompras()) {
             Producto p = d.getTheProducto();
-            p.setDisponibilidadProducto(p.getDisponibilidadProducto() - d.getCantidadSeleccionada());
+            p.descontarInventario(d.getCantidadSeleccionada());
         }
         compra.setConfirmada(true);
         return true;
@@ -307,33 +291,6 @@ public class Supermercado {
         }
         return total;
     }
-
-    /**
-     * Metodo para verificar si la forma de pago es valida
-     * @param metodoPago
-     * @return
-     */
-
-    public boolean esMetodoPagoValido(String metodoPago) {
-        return metodoPago.equalsIgnoreCase("Tarjeta")
-                || metodoPago.equalsIgnoreCase("Transferencia bancaria")
-                || metodoPago.equalsIgnoreCase("Efectivo");
-    }
-
-    /**
-     * Metodo para verificar si la categoria del producto es valida
-     * @param categoria
-     * @return
-     */
-
-    public boolean esCategoriaValida(String categoria) {
-        return categoria.equalsIgnoreCase("Alimentos")
-                || categoria.equalsIgnoreCase("Bebidas")
-                || categoria.equalsIgnoreCase("Productos de aseo")
-                || categoria.equalsIgnoreCase("Cuidado personal");
-    }
-
-
 
     public String getNombreComercial() {
         return nombreComercial;
@@ -392,5 +349,5 @@ public class Supermercado {
                 '}';
     }
 
-    private int numero;
+
 }

@@ -8,11 +8,11 @@ public class DetalleCompra {
 
     private Producto theProducto;
 
-    public DetalleCompra(Producto theProducto, int cantidadSeleccionada, double precioAplicado, double subTotal) {
+    public DetalleCompra(Producto theProducto, int cantidadSeleccionada, double precioAplicado) {
         this.theProducto = theProducto;
         this.cantidadSeleccionada = cantidadSeleccionada;
         this.precioAplicado = precioAplicado;
-        this.subTotal = subTotal;
+        this.subTotal = calcularSubtotal();
     }
 
     public int getCantidadSeleccionada() {
@@ -45,6 +45,15 @@ public class DetalleCompra {
 
     public void setTheProducto(Producto theProducto) {
         this.theProducto = theProducto;
+    }
+
+    /**
+     * Metodo para calcular el subtotal del detalle
+     * @return
+     */
+
+    public double calcularSubtotal() {
+        return cantidadSeleccionada * precioAplicado;
     }
 
     @Override

@@ -81,6 +81,47 @@ public class Compra {
         this.listDetalleCompras = listDetalleCompras;
     }
 
+    /**
+     * Metodo para calcular el total de la compra
+     * @return
+     */
+
+    public double calcularTotal() {
+        double total = 0;
+        for (DetalleCompra d : listDetalleCompras) {
+            total += d.getSubTotal();
+        }
+        return total;
+    }
+
+    /**
+     * Metodo suma cuantas unidades de un producto ya estan seleccionados en la misma compra
+     * @param producto
+     * @return
+     */
+
+    public int cantidadYaSeleccionada(Producto producto) {
+        int cantidad = 0;
+        for (DetalleCompra d : listDetalleCompras) {
+            if (d.getTheProducto() == producto) {
+                cantidad += d.getCantidadSeleccionada();
+            }
+        }
+        return cantidad;
+    }
+
+    /**
+     * Metodo para verificar si la forma de pago es valida
+     * @param metodoPago
+     * @return
+     */
+
+    public static boolean esMetodoPagoValido(String metodoPago) {
+        return metodoPago.equalsIgnoreCase("Tarjeta")
+                || metodoPago.equalsIgnoreCase("Transferencia bancaria")
+                || metodoPago.equalsIgnoreCase("Efectivo");
+    }
+
     @Override
     public String toString() {
         return "Compra{" +

@@ -440,7 +440,7 @@ public class Main {
 
 
     /**
-     * Mustra el reporte en un periodo dado
+     * Mustra el reporte en un periodo dado al ingreasr una fecha inicio y una fecha fin
      */
 
     private static void reporteVentasIntervalo() {

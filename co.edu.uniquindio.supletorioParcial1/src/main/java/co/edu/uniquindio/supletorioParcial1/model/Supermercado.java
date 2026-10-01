@@ -391,4 +391,6 @@ public class Supermercado {
                 ", telefono='" + telefono + '\'' +
                 '}';
     }
+
+    private int numero;
 }

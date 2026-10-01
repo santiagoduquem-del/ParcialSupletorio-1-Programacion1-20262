@@ -189,6 +189,10 @@ public class Main {
         } while (opcion != 0);
     }
 
+    /**
+     * opcion de registar producto
+     */
+
     private static void registrarProducto() {
         String codigo = leerTexto("Código del producto:");
         String nombre = leerTexto("Nombre del producto:");
@@ -203,6 +207,10 @@ public class Main {
         }
     }
 
+    /**
+     * Opcion de listar producto
+     */
+
     private static void listarProductos() {
         if (supermercado.getListProductos().isEmpty()) {
             mostrar("No hay productos registrados");
@@ -216,6 +224,9 @@ public class Main {
         mostrar(texto);
     }
 
+    /**
+     * Opcion de actualizar producto
+     */
     private static void actualizarProducto() {
         String codigo = leerTexto("Código del producto a actualizar:");
         if (supermercado.buscarProducto(codigo) == null) {
@@ -234,6 +245,10 @@ public class Main {
         }
     }
 
+    /**
+     * opcion de eliminar producto
+     */
+
     private static void eliminarProducto() {
         String codigo = leerTexto("Código del producto a eliminar:");
         if (supermercado.eliminarProducto(codigo)) {
@@ -243,7 +258,9 @@ public class Main {
         }
     }
 
-    // ---------------------- MENÚ COMPRAS ----------------------
+    /**
+     * Submenu de compras
+     */
 
     private static void menuCompras() {
         int opcion;
@@ -280,6 +297,11 @@ public class Main {
         } while (opcion != 0);
     }
 
+
+    /**
+     * Opcion crear compra
+     */
+
     private static void crearCompra() {
         Cliente cliente = supermercado.buscarCliente(leerTexto("Documento del cliente:"));
         if (cliente == null) {
@@ -296,6 +318,10 @@ public class Main {
             mostrar("No se pudo crear (datos inválidos, fecha incorrecta o código repetido)");
         }
     }
+
+    /**
+     * Opcion para agrgar el producto a la compra
+     */
 
     private static void agregarProductoACompra() {
         Compra compra = supermercado.buscarCompra(leerEntero("Código de la compra:"));
@@ -317,6 +343,10 @@ public class Main {
         }
     }
 
+    /**
+     * Opcion para confirmar la compra
+     */
+
     private static void confirmarCompra() {
         Compra compra = supermercado.buscarCompra(leerEntero("Código de la compra:"));
         if (compra == null) {
@@ -330,6 +360,10 @@ public class Main {
         }
     }
 
+    /**
+     * Opcion para ver detalles de la compra(resumen)
+     */
+
     private static void verDetalleCompra() {
         Compra compra = supermercado.buscarCompra(leerEntero("Código de la compra:"));
         if (compra == null) {
@@ -338,6 +372,11 @@ public class Main {
         }
         mostrar(textoCompra(compra));
     }
+
+
+    /**
+     * Opcion para poder ver las compras del cliente
+     */
 
     private static void verComprasDeCliente() {
         Cliente cliente = supermercado.buscarCliente(leerTexto("Documento del cliente:"));
@@ -356,6 +395,12 @@ public class Main {
         mostrar(texto);
     }
 
+    /**
+     * Mustra mensaje en pantalla referente al estado de la compra
+     * @param compra
+     * @return
+     */
+
     private static String textoCompra(Compra compra) {
         String estado = "Pendiente";
         if (compra.isConfirmada()) {
@@ -373,7 +418,15 @@ public class Main {
         return texto;
     }
 
-    // ---------------------- REPORTE ----------------------
+    /**
+     * Submenu reporte
+     *
+     */
+
+
+    /**
+     * Mustra el reporte en una fecha ingresada
+     */
 
     private static void reporteVentas() {
         LocalDate fecha = leerFecha("Fecha a consultar (aaaa-mm-dd):");
@@ -384,6 +437,11 @@ public class Main {
         double total = supermercado.calcularVentasPorFecha(fecha);
         mostrar("Total vendido el " + fecha + ": $" + total);
     }
+
+
+    /**
+     * Mustra el reporte en un periodo dado
+     */
 
     private static void reporteVentasIntervalo() {
         LocalDate fechaInicio = leerFecha("Fecha de inicio (aaaa-mm-dd):");
@@ -400,7 +458,10 @@ public class Main {
         mostrar("Total vendido entre " + fechaInicio + " y " + fechaFin + ": $" + total);
     }
 
-    // ---------------------- MÉTODOS DE LECTURA ----------------------
+    /**
+     * Metodos que sirven para la lectura de datos
+     * @param mensaje
+     */
 
     private static void mostrar(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);

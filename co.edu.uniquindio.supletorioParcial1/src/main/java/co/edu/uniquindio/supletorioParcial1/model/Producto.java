@@ -4,14 +4,14 @@ public class Producto {
 
     private String codigoProducto;
     private String nombreProducto;
-    private String CategoriaProducto;
+    private String categoriaProducto;
     private double precioUnitarioProducto;
-    private double disponibilidadProducto;
+    private int disponibilidadProducto;
 
-    public Producto(String codigoProducto, String nombreProducto, String categoriaProducto, double precioUnitarioProducto, double disponibilidadProducto) {
+    public Producto(String codigoProducto, String nombreProducto, String categoriaProducto, double precioUnitarioProducto, int disponibilidadProducto) {
         this.codigoProducto = codigoProducto;
         this.nombreProducto = nombreProducto;
-        CategoriaProducto = categoriaProducto;
+        this.categoriaProducto = categoriaProducto;
         this.precioUnitarioProducto = precioUnitarioProducto;
         this.disponibilidadProducto = disponibilidadProducto;
     }
@@ -33,11 +33,11 @@ public class Producto {
     }
 
     public String getCategoriaProducto() {
-        return CategoriaProducto;
+        return categoriaProducto;
     }
 
     public void setCategoriaProducto(String categoriaProducto) {
-        CategoriaProducto = categoriaProducto;
+        this.categoriaProducto = categoriaProducto;
     }
 
     public double getPrecioUnitarioProducto() {
@@ -48,11 +48,11 @@ public class Producto {
         this.precioUnitarioProducto = precioUnitarioProducto;
     }
 
-    public double getDisponibilidadProducto() {
+    public int getDisponibilidadProducto() {
         return disponibilidadProducto;
     }
 
-    public void setDisponibilidadProducto(double disponibilidadProducto) {
+    public void setDisponibilidadProducto(int disponibilidadProducto) {
         this.disponibilidadProducto = disponibilidadProducto;
     }
 
@@ -61,9 +61,9 @@ public class Producto {
         return "Producto{" +
                 "codigoProducto='" + codigoProducto + '\'' +
                 ", nombreProducto='" + nombreProducto + '\'' +
-                ", CategoriaProducto='" + CategoriaProducto + '\'' +
-                ", precioUnitarioProducto='" + precioUnitarioProducto + '\'' +
-                ", disponibilidadProducto='" + disponibilidadProducto + '\'' +
+                ", categoriaProducto='" + categoriaProducto + '\'' +
+                ", precioUnitarioProducto=" + precioUnitarioProducto +
+                ", disponibilidadProducto=" + disponibilidadProducto +
                 '}';
     }
 }

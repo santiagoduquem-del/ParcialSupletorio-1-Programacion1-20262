@@ -2,32 +2,17 @@ package co.edu.uniquindio.supletorioParcial1.model;
 
 public class DetalleCompra {
 
-    private Producto producto;
     private int cantidadSeleccionada;
     private double precioAplicado;
     private double subTotal;
 
-    // Constructor que calcula automáticamente el subtotal al instanciar
-    public DetalleCompra(Producto producto, int cantidadSeleccionada) {
-        this.producto = producto;
+    private Producto theProducto;
+
+    public DetalleCompra(Producto theProducto, int cantidadSeleccionada, double precioAplicado, double subTotal) {
+        this.theProducto = theProducto;
         this.cantidadSeleccionada = cantidadSeleccionada;
-        this.precioAplicado = producto.getPrecioUnitarioProducto();
-        this.subTotal = calcularSubtotal();
-    }
-
-    public double calcularSubtotal() {
-        return this.cantidadSeleccionada * this.precioAplicado;
-    }
-
-    // Getters y Setters
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-        this.precioAplicado = producto.getPrecioUnitarioProducto();
-        this.subTotal = calcularSubtotal();
+        this.precioAplicado = precioAplicado;
+        this.subTotal = subTotal;
     }
 
     public int getCantidadSeleccionada() {
@@ -36,15 +21,39 @@ public class DetalleCompra {
 
     public void setCantidadSeleccionada(int cantidadSeleccionada) {
         this.cantidadSeleccionada = cantidadSeleccionada;
-        this.subTotal = calcularSubtotal();
     }
 
     public double getPrecioAplicado() {
         return precioAplicado;
     }
 
+    public void setPrecioAplicado(double precioAplicado) {
+        this.precioAplicado = precioAplicado;
+    }
+
     public double getSubTotal() {
         return subTotal;
     }
-}
 
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public Producto getTheProducto() {
+        return theProducto;
+    }
+
+    public void setTheProducto(Producto theProducto) {
+        this.theProducto = theProducto;
+    }
+
+    @Override
+    public String toString() {
+        return "DetalleCompra{" +
+                "producto=" + theProducto.getNombreProducto() +
+                ", cantidadSeleccionada=" + cantidadSeleccionada +
+                ", precioAplicado=" + precioAplicado +
+                ", subTotal=" + subTotal +
+                '}';
+    }
+}
